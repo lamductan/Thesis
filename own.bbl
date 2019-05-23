@@ -1,0 +1,22 @@
+\begin{thebibliography}{1}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Pham et~al.(2018)Pham, Tran, Li, Xiang, Zhou, Nie, Liu, Su, Tran,
+  \textbf{Bui, Ngoc-Minh}, \textbf{Do, Trong-Le}, Ninh, Le, Dao, Nguyen, Do,
+  Duong, Hua, Yu, Nguyen, and Yeung]{3dor.20181052}
+Quang-Hieu Pham, Minh-Khoi Tran, Wenhui Li, Shu Xiang, Heyu Zhou, Weizhi Nie,
+  Anan Liu, Yuting Su, Minh-Triet Tran, \textbf{Bui, Ngoc-Minh}, \textbf{Do,
+  Trong-Le}, Tu~V. Ninh, Tu-Khiem Le, Anh-Vu Dao, Vinh-Tiep Nguyen, Minh~N. Do,
+  Anh-Duc Duong, Binh-Son Hua, Lap-Fai Yu, Duc~Thanh Nguyen, and Sai-Kit Yeung.
+\newblock {RGB-D Object-to-CAD Retrieval}.
+\newblock In Alex Telea, Theoharis Theoharis, and Remco Veltkamp, editors,
+  \emph{Eurographics Workshop on 3D Object Retrieval}. The Eurographics
+  Association, 2018.
+\newblock ISBN 978-3-03868-053-6.
+\newblock \doi{10.2312/3dor.20181052}.
+
+\end{thebibliography}
