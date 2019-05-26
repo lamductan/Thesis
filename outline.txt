@@ -1,0 +1,40 @@
+0. Abstract (Tan)
+
+1. Introduction (T.Anh)
+    1.1 Overview
+    1.2 Introduction to remote sensing
+    1.3 Related work
+    1.4 Contributions and Outline (Both)
+
+2. Deep Learning Background (Tan)
+    2.1 Supervised Learning
+    2.2 Optimization
+    2.3 Backpropagation
+    2.4 Neural Networks
+        2.4.1 Vanilla Neural Networks
+        2.4.2 Convolutional Neural Networks
+        2.4.3 Recurrent Neural Networks
+    2.5 Summary
+
+3. Recover Water Body from High-Resolution Cloud Optical Satellite Images (T.Anh)
+    3.1 Related work
+    3.2 Model
+    3.3 Optimization
+    3.4 Experiments
+    3.5 Conclusions
+
+4. Predict Water Body from Low-Resolution Satellite Images (Tan)
+    4.1 Related work
+    4.2 Model
+    4.3 Optimization
+    4.4 Experiments
+    4.5 Conclusions
+
+5. Predict Water Body from Recovered High-Resolution Satellite Images (Later, if have enough time)
+    4.1 Related work
+    4.2 Model
+    4.3 Optimization
+    4.4 Experiments
+    4.5 Conclusions
+
+6. Conclusions (Both)

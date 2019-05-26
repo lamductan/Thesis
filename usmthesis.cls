@@ -239,6 +239,9 @@
 \RequirePackage{xpatch}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
+\usepackage{fourier}
+\RequirePackage[T5]{fontenc}
+\usepackage{textcomp}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Sets up the fonts: Load the Times, Helvetica and
 %% Courier (or TX Typewriter) fonts for serif, sans serif
@@ -278,9 +281,8 @@
 % "Dafter Isi" etc.  "english" is the main language
 % here. Babel now supports bahasam.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[bahasam,english]{babel}
-\usepackage[utf8]{vietnam}
-
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese,english]{babel}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Default spacing is double.  In your actual content,
@@ -395,7 +397,7 @@
 \renewcommand\cftchappagefont{\normalfont\normalsize}
 \renewcommand\cftchapdotsep{1}
 \renewcommand\cftchapleader{\normalfont\cftdotfill{\cftchapdotsep}}
-\renewcommand\cftchappresnum{\MakeTextUppercase{Chương} }
+\renewcommand\cftchappresnum{\MakeTextUppercase{Chapter} }
 \if@tocchapnumwords
 \renewcommand\cftchapaftersnum{:\space}
 \else
@@ -403,18 +405,18 @@
 \fi
 \newlength\tmplength
 
-\renewcommand\cftfigpresnum{Hình }
+\renewcommand\cftfigpresnum{Figure }
 \cftsetindents{fig}{0pt}{6.2pc}
 \renewcommand\cftfigdotsep{\cftnodots}
 %\renewcommand\cftfigpagefont{\bfseries}
 
-\renewcommand\cftsubfigpresnum{Hình }
+\renewcommand\cftsubfigpresnum{Figure }
 \cftsetindents{subfig}{0pt}{6.2pc}
 \renewcommand\cftsubfigleader{\hfill}
 %\renewcommand\cftsubfigpagefont{\bfseries}
 %\renewcommand\cftfigfont{\mdseries\justifying}
 
-\renewcommand\cfttabpresnum{Bảng }
+\renewcommand\cfttabpresnum{Table }
 \cftsetindents{tab}{0pt}{6.2pc}
 \renewcommand\cfttabdotsep{\cftnodots}
 %\renewcommand\cfttabpagefont{\bfseries}
@@ -599,7 +601,7 @@
 %\vspace*{10mm}
 %
 
-UNIVERSITY OF SCIENCE\\
+UNIVERSITY OF NATURAL SCIENCE\\
 FACULTY OF INFORMATION TECHNOLOGY\\
 HONOR PROGRAM\\
 \vspace*{50pt}
@@ -622,7 +624,7 @@ HONOR PROGRAM\\
 \endgroup
 
 \vspace*{150pt}
-HCM City, \@submityear\par
+TP HCM, năm \@submityear\par
 %
 %\vspace*{20mm}
 \end{titlepage}
@@ -637,7 +639,7 @@ HCM City, \@submityear\par
 \fontfamily{phv}\selectfont
 \begingroup
 \fontsize{14pt}{16pt}\selectfont%
-UNIVERSITY OF SCIENCE\\
+UNIVERSITY OF NATURAL SCIENCE\\
 FACULTY OF INFORMATION TECHNOLOGY\\
 HONOR PROGRAM\\
 \endgroup
@@ -763,7 +765,7 @@ ACADEMIC PERIOD 2015 - 2019
 \newenvironment{EnAbstract}{%
   \titlespacing*{\chapter}{0pt}{-50pt}{0pt}
   \titleformat{\chapter}[display]{\filcenter\bfseries}{\fontsize{12pt}{14pt}\selectfont\MakeTextUppercase{\chaptername{} \thechapter}}{-1em}{\linespread{2}\bfseries\fontsize{12pt}{14pt}\selectfont\MakeTextUppercase}
-  \chapter[\abstractname]{Summary}%
+  \chapter[\abstractname]{SUMMARY}%
   %{\centering\fontsize{12pt}{14pt}\bfseries\selectfont ABSTRACT\\}
 }{%
   \ignorespacesafterend%
@@ -783,19 +785,19 @@ ACADEMIC PERIOD 2015 - 2019
 \apptocmd{\frontmatter}{%
   \addtocontents{toc}{\protect\raggedright\protect\sloppy}
   \if@tocpage
-  \addtocontents{toc}{\protect\hfill{\protect\bfseries Page}\\}
+  \addtocontents{toc}{\protect\hfill{\protect\bfseries Trang}\\}
   \fi
   \addtocontents{lof}{\protect\raggedright\protect\sloppy}
   \if@lofpage
-  \addtocontents{lof}{\protect\hfill{\protect\bfseries Page}\\}
+  \addtocontents{lof}{\protect\hfill{\protect\bfseries Trang}\\}
   \fi
   \addtocontents{lot}{\protect\raggedright\protect\sloppy}
   \if@lotpage
-  \addtocontents{lot}{\protect\hfill{\protect\bfseries Page}\\}
+  \addtocontents{lot}{\protect\hfill{\protect\bfseries Trang}\\}
   \fi
   \addtocontents{lop}{\protect\raggedright\protect\sloppy}
   \if@loppage
-  \addtocontents{lop}{\protect\hfill{\protect\bfseries Page}\\}
+  \addtocontents{lop}{\protect\hfill{\protect\bfseries Trang}\\}
   \fi
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -826,7 +828,7 @@ ACADEMIC PERIOD 2015 - 2019
 }{}{}
 
 
-\newcommand{\appendixtocname}{Appendix}
+\newcommand{\appendixtocname}{Phụ lục}
 \pretocmd{\appendix}{%
   \clearpage
   \addtocontents{toc}{\protect\cftpagenumbersoff{part}}
