@@ -71,10 +71,45 @@ With the initial goal of monitoring reservoirs, SAR images seem to be the swiss 
 
 \section{Related Work} % 2 pages
 
-- Water body segmentation problems. +3 paper.
-- Water Resources Monitoring problems and application. +3 paper
-- Water body recover. +3 paper.
-- Prediction problems
+\textbf{Thêm hình vào}
+
+% Water Resources Monitoring problems and application. ~2 paper
+
+Water resources monitoring provides information about the state and trend of monitored objects, which are water bodies a.k.a lakes, rivers or reservoirs on the Earth. It might be:
+
+\begin{itemize}
+	\item \textit{a local monitoring}, which can give a solution for specific local problem, on a limited part of water body or area.
+	\item \textit{a global monitoring} on larger area, which has state that could be impacted or caused by some human activities.
+	\item \textit{comprehensive monitoring}, which performs on a network of multi water body observation, in order to make decision for efficient use, protection and restoration of water resources.
+	\item \textit{disaster monitoring}, which could immediately warn about anomaly situation on water body area, loads, etc., primarily by human activities.
+\end{itemize}
+
+Nowadays remote sensing techniques, when combines with Computing, they are used in different area of research for monitoring. For examples with internet of Things (IoT), a smart water quality monitoring system for Fuji Islands, located in the vast Pacific Ocean, is proposed in (1) . Besides that, water level monitoring and management of dams (2) could help people on automatically closing or opening gate of the dam, depending on current water level in dams is less or higher than optimum value.
+
+% 1 - https://www.researchgate.net/publication/287647835_Smart_Water_Quality_Monitoring_System.
+
+% 2 - https://www.researchgate.net/publication/328761722_Water_Level_Monitoring_and_Management_of_Dams_using_IoT
+
+% Water body segmentation problems. ~4 paper.
+
+In order to reach above aims, many different water body segmentation techniques are widely used. Each techniques could be used on some certain types. For example with multi-spectral data like Landsat, an automatic mapping water bodies approach to detect waterline boundaries is proposed in (1), or applying Principle Component Analysis, which is a famous image processing technique to find out most important dimensions of data, to find out segmentation and morphology of open water bodies (2). There are also many approaches for radar optical images. With SAR images provided by Sentinel-1, water volumes retained at reservoirs can be monitored after creating an interferometric of area (3), detect surface water bodies using Valley-Emphasis method (4).
+
+% 1 - https://aslopubs.onlinelibrary.wiley.com/doi/pdf/10.4319/lom.2012.10.1037
+% 2 - https://www.tandfonline.com/doi/abs/10.1080/01431160600702384
+% 3 - https://www.mdpi.com/2072-4292/6/11/10676/pdf
+% 4 - http://vjs.ac.vn/index.php/jse/article/download/8298/pdf
+
+
+% - Water body recover. ~2 paper.
+Due to limitations of optical satellites like Landsat, MODIS, on the days that surface is covered by thick clouds, the acquired image from those devices usually suffer missing information, caused to not able to use because we can't see anything under cloudy cover. This lead to many problems on segmentation system which uses images from those satellites. In order to solve this problems, many methods have been proposed in order to recover the missing data. This kind of problem is similar to 
+in-painting method in image processing field. There are variety of approaches, from using a multi-channel non-local total variation model (1), to applying neural networks to recover (2). Almost these method use one or more undamaged images as reference. 
+
+% 1 - Inpainting for remotely sensed images with a multichannel nonlocal total variation model
+% 2 - Missing Data Reconstruction in Remote Sensing image with a Unified Spatial-Temporal-Spectral Deep Convolutional Neural Network
+
+% Prediction problems ~ 2 paper
+
+
 
 \section{Contributions} % 1 pages
 
