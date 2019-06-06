@@ -11,30 +11,30 @@ In this chapter, we would like to apply information about trending of monitored 
 Different from other image types, remote sensing imagery has many useful attributes for recovery process, including spatial, spectral and temporal information. Depending on those information, many missing information recovery methods for remote sensing imagery has been proposed, which can be classified into four main categories: 
 
 \begin{enumerate}
-	\item \textbf{Spatial-based methods}, which are also called \textit{inpainting} methods. These are the most basic methods in image reconstruction, assume that undamaged regions have the same or related statistical features or texture information as the missing regions. These methods are suitable for recovering the small areas or regions, so that are not qualified for reconstructing for large or complex area such as remote sensing.
+	\item \textbf{Spatial-based methods}\cite{Zhang2006,YangLLSWL16}. This method is also known as \textit{inpainting} method. These are the most basic method in image reconstruction, assume that undamaged regions have the same or related statistical features or texture information as the missing regions. These methods are suitable for recovering the small areas or regions, so that are not qualified for reconstructing for large or complex area such as remote sensing.
 	
-	\item \textbf{Spectral-based methods}. Because optical satellites data provides multiple bands data, so that these methods usually use a spatial correlation between different bands to reconstruct missing data. These methods are mostly taken experiments on Terra MODIS band 6, because this band is often damaged, and band 6 and 7 are closely correlated. Because these methods have a high level of accuracy, it also can't deal with thick cloudy cover, because in this situation, all bands are affected due to limitation of optical satellites.
+	\item \textbf{Spectral-based methods}\cite{Lingli2006,Li2014}. Because optical satellites data provides multiple bands data, so that these methods usually use a spatial correlation between different bands to reconstruct missing data. These methods are mostly taken experiments on Terra MODIS band 6, because this band is often damaged, and band 6 and 7 are closely correlated. Because these methods have a high level of accuracy, it also can't deal with thick cloudy cover, because in this situation, all bands are affected due to limitation of optical satellites.
 	
-	\item \textbf{Temporal-based methods}. Temporal information can be used to recover missing data. The main idea is using the remote sensing data in the same region, but different times. Some use only one, others use many images. In summary, these methods work well for a variety of situations, including thick clouds, but it mainly \textit{selects the most similar regions to recover missing regions}.
+	\item \textbf{Temporal-based methods}\cite{ZENG2013182,Gao2017}. Temporal information can be used to recover missing data. The main idea is using the remote sensing data in the same region, but different times. Some use only one, others use many images. In summary, these methods work well for a variety of situations, including thick clouds, but it mainly \textit{selects the most similar regions to recover missing region}.
 	
-	\item \textbf{Hybrid methods}. These methods are merged from some of above methods, which could take advantages of each method, in order to produce higher accuracy. 
+	\item \textbf{Hybrid methods}\cite{Ng2017,Li2016}. These methods are merged from some of above methods, which could take advantages of each method, in order to produce higher accuracy. 
 \end{enumerate}
 
-Most of above methods only aims to take some example looks under cloud cover, so the common thing between above methods is only using one or two images related to damaged image as reference. From deep learning based method in removing clouds using multi-spectral images from single band  \cite{Zhang2018}, we propose new neural network architectures that make use of temporal series of multi-spectral images to recover better cloud-free images.
+Most of above methods only aims to take some example looks under cloud cover, so the common thing between above methods is only using one or two images related to damaged image as reference. From deep learning based method, Unified Spatial-Temporal-Spectral Deep Convolutional Neural Network (STS-CNN), in removing clouds using multi-spectral images from single band \cite{Zhang2018}, we propose new neural network architectures that make use of temporal series of multi-spectral images to recover better cloud-free images. Notice that, \textit{\textbf{STS-CNN} only feeds one image as referenced image and \textit{temporal} just means \textit{at different times}, not use periodicity attribute of weather.}
 
-\begin{figure}[h!]
+\begin{figure}[]
 %	\centering
 	\includegraphics[width=1\textwidth]{figures/sts-cnn_framework.png}
-	\caption{For example of Unified Spatial-Temporal-Spectral Deep Convolutional Neural Network, Qiang et al., they use only one image as referenced image and \textit{temporal} just means \textit{at different times}, not use periodicity attribute of weather.}
+	\caption{Flowchart of the STS-CNN framework in \cite{Zhang2018}}
 \end{figure}
 
 \section {Dataset}
-In this chapter, Tri An reservoir is chosen for experimetns, because it has enough large area for visualization, segmentation and calculation. Each tile from satellite imagery can only focus on part of the Earth, and Tri An reservoirs' water body belongs to one tile, so that it is not necessary to concatenate many tiles.
+In this chapter, Tri An reservoir is chosen for experiments, because it has enough large area for visualization, segmentation and calculation. Each tile from satellite imagery can only focus on part of the Earth, and Tri An reservoirs' water body belongs to one tile, so that it is not necessary to concatenate many tiles.
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
-	\includegraphics[width=0.6\textwidth]{figures/l8tile.png}
-	\caption{Tri An Reservoir belongs to a tile of Landsat 8 data file. Date taken: January 10, 2013}
+	\includegraphics[width=0.4\textwidth]{figures/l8tile.png}
+	\caption{Tri An Reservoir belongs to a tile of Landsat 8 data file, taken on January 10, 2013}
 \end{figure}	
 
 
@@ -48,17 +48,16 @@ In this method, we will refer a neural network of STS-CNN\cite{Zhang2018} to re-
 
 This algorithm has 3 inputs: (1) A missing image, (2) a referenced image and a missing image (1) with damaged regions filled by corresponding region in referenced image. The output is a recovered image. Note that, we have three images as input, and the third aims to tell a neural network easier to determine which are missing regions on the images. The referenced image will be also taken from Landsat 8, on cloudy-free day. For equal comparison to original method, we will use example of masks that provided with this paper, can be found at: \href{https://github.com/WHUQZhang/STS-CNN/}{https://github.com/WHUQZhang/STS-CNN/}.
 
-The optimizer function is $Adam$ and the learning rate of whole network is $1e-4$. See at Figure \ref{fig:modifiedModel}.
+The optimizer function is $Adam$ and the learning rate of whole network is $1e-4$. Model at figure \ref{fig:modifiedModel} contains 3 inputs: \textit{Input 1}: damaged image, \textit{Input 2}: referenced image and \textit{Input 3}: referenced with simulated-missing regions like \textit{Input 1}.
 
-\begin{figure}[h!tb]
-	\clearpage{}
+\begin{figure}[t]
 	\centering
 	\includegraphics[width=0.6\textwidth]{figures/modifiedModel.png}
-	\caption{Modified model, with 3 of inputs. \textit{Input 1}: Missing image. \textit{Input 2}: Referenced image. \textit{Input 3}: Referenced with simulated-missing regions like \textit{Input 1}}
+	\caption{Modified model from STS-CNN.}
 	\label{fig:modifiedModel}
 \end{figure}	
 
-For comparison, we will use cloud-free image and add on it two type mask to feed into network. The first type is a simple shape mask from original method. The second is get from QA Bands of one cloud day, which is acquired by Landsat 8. In order to get cloud cover, F-mask program (Python, \href{http://pythonfmask.org}{http://pythonfmask.org}) is used to get cloud mask from QA Bands. The table shows difference between original method and my re-implemented method. For more visualization, take a look at figure \textit{4.1} in \textbf{Experiment}. For measuring between methods, in this chapter, we use Peak signal-to-noise ratio.
+For comparison, we will use cloud-free image and add on it two type mask to feed into network. The first type is a simple shape mask from original method. The second is get from QA Bands of one cloud day, which is acquired by Landsat 8. In order to get cloud cover, F-mask program (Python, \href{http://pythonfmask.org}{http://pythonfmask.org}) is used to get cloud mask from QA Bands. The table shows difference between original method and my re-implemented method. For more visualization, take a look at figure \ref{fig:improvedModel_experiment_1}, \ref{fig:improvedModel_experiment_2} and \ref{fig:improvedModel_experiment_3} in \ref{experiment_improvedModel}. For measuring between methods, in this chapter, we use Peak signal-to-noise ratio.
 
 \subparagraph{Peak signal-to-noise ratio} \textit{Wikipedia} It often abbreviated $PSNR$, is an engineering term for the ratio between the maximum possible power of a signal and the power of corrupting noise that affects the fidelity of its representation. Because many signals have a very wide dynamic range, $PSNR$ is usually expressed in terms of the logarithmic decibel scale. 
 
@@ -77,7 +76,7 @@ MSE \textrm{ = } \frac{1}{mn} \sum_{i \textrm{ = } 1}^{m} \sum_{j \textrm{ = } 1
 \vspace{0.3cm}
 Table of comparison:
 
-\begin{table}[h!]
+\begin{table}[]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
@@ -97,14 +96,14 @@ As periodicity of weather is being used for higher accuracy in recovering water 
 
 Keras framework also provides Time-Distributed layers, which applies for every temporal slice of an input. Because of limitation of hardware memory, we feed into it five consecutive images acquired from Landsat 8. For referenced image, we try with 2 type: first is Landsat 8 and the second is Sentinel-1. Because only water body is focused, so we've classified water body on Sentinel-1 data, and resize it to the same of Landsat 8 (Sentinel-1 has 10 meters of resolution). Model specification contains 2 part: \textit{part 1}  (at Fig. \ref{fig:timemodelPart1}) is about using Time-Distributed to get predicted image as reference, \textit{part 2} (at Fig. \ref{fig:timemodelPart2}) is quite similar to existing method for reconstruction.
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\includegraphics[width=0.5\textwidth]{figures/timemodelPart1.png}
 	\caption{Applying Time-Distributed in Neural Network. Lambda is a function to get 1-time next predicted image from time-series images to be reference image.}
 	\label{fig:timemodelPart1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\includegraphics[width=0.7\textwidth]{figures/timemodelPart2.png}
 	\caption{Using predicted image as reference image, with part in order to reconstruct missing regions. Note that there is not input \textit{referenced image with missing data}}
@@ -113,9 +112,9 @@ Keras framework also provides Time-Distributed layers, which applies for every t
 
 \subsection{Recurrent-CNN implementation}
 
-The idea behind Recurrent Neural Networks (RNNs) is to make use of sequential information. So that, this approach aims to use Long Short Term Memory networks – usually just called “LSTMs” – are a special kind of RNN, capable of learning long-term dependencies, to make prediction of next image, based on five consecutive images, and use the next image as referenced image for reconstruction. For the predictive part, see \ref{fig:modelConv2DLSTM_1}. The main is similar to  \ref{fig:timemodelPart2}
+The idea behind Recurrent Neural Networks (RNNs) is to make use of sequential information. So that, this approach aims to use Long Short Term Memory networks – usually just called “LSTMs” – are a special kind of RNN, capable of learning long-term dependencies, to make prediction of next image, based on five consecutive images, and use the next image as referenced image for reconstruction. For the predictive part, see \ref{fig:modelConv2DLSTM_1}. The main is similar to \ref{fig:timemodelPart2}
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\includegraphics[width=0.5\textwidth]{figures/modelConv2DLSTM_1.png}
 	\caption{LSTM (as Conv2DLSTM Layer) aims to predict the next image to be used as referenced image}
@@ -124,9 +123,9 @@ The idea behind Recurrent Neural Networks (RNNs) is to make use of sequential in
 
 \subsection{Comparison}
 
-This is a comparison between above methods. Input 1 is damaged image,  input 2 is a time-series data (5 images).
+This is a comparison between above methods. Visualization is available at \ref{experiment_timeSeriesModel}, in which \textit{Input 1 is damaged image, input 2 is a time-series data (5 images)}. 
 
-\begin{table}[h!]
+\begin{table}[]
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline
@@ -140,10 +139,10 @@ This is a comparison between above methods. Input 1 is damaged image,  input 2 i
 
 \section{Experiments}
 
-\subsection{One reference image - Comparison with original method}
+\subsection{One reference image - Comparison with original method}\label{experiment_improvedModel}
 
 In this section, we take an example from testing data. Band 3, 4, 5 \textit{(Red, Green, Near IR from Landsat 8)} were chosen for making RGB image. For image within range $0..1$, after reconstructed, we multiply for each pixel by 255.
-\begin{figure}[h!]
+\begin{figure}[]
 	\includegraphics[width=0.7\linewidth]{figures/groud_truth.png}
 	\centering
 	\caption{Ground Truth}
@@ -151,52 +150,52 @@ In this section, we take an example from testing data. Band 3, 4, 5 \textit{(Red
 
 \subsubsection{Easiest case: Simple cloud shape}
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\subfloat[]{\includegraphics[width=0.32\linewidth]{figures/sts_sample_cloud.png}}
 	\subfloat[]{\includegraphics[width=0.32\linewidth]{figures/1_simple.png}}
 	\subfloat[]{\includegraphics[width=0.32\linewidth]{figures/255_simple.png}} 
-
 	\centering
 	\caption{
 		\textbf{(a)} STS-CNN.
 		\textbf{(b)} Modified Model, range $0..1$.
 		\textbf{(c)} Modified Model, range $0..255$}
+	\label{fig:improvedModel_experiment_1}
 \end{figure}
 
 
 \subsubsection{Average case: Multi-simple cloud shape}
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\subfloat[]{\includegraphics[width=0.32\linewidth]{figures/sts_sample_multicloud.png}}
 	\subfloat[]{\includegraphics[width=0.32\linewidth]{figures/1_multiFake.png}}
 	\subfloat[]{\includegraphics[width=0.32\linewidth]{figures/255_multi_fake.png}} 
-
 	\centering
 	\caption{
 		\textbf{(a)} STS-CNN.
 		\textbf{(b)} Modified Model, range $0..1$.
 		\textbf{(c)} Modified Model, range $0..255$}
+	\label{fig:improvedModel_experiment_2}
 \end{figure}
 
 \subsubsection{Hardest case: Real cloud}
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\subfloat[]{\includegraphics[width=0.32\linewidth]{figures/sts_real_cloud.png}}
 	\subfloat[]{\includegraphics[width=0.32\linewidth]{figures/1_complex.png}}
 	\subfloat[]{\includegraphics[width=0.32\linewidth]{figures/255_complex.png}} 
-	
 	\centering
 	\caption{
 		\textbf{(a)} STS-CNN.
 		\textbf{(b)} Modified Model, range $0..1$.
 		\textbf{(c)} Modified Model, range $0..255$}
+	\label{fig:improvedModel_experiment_3}
 \end{figure}
 
 
-\subsection{Trying to recover water body}
+\subsection{Trying to recover water body}\label{experiment_timeSeriesModel}
 Model has been trained in \textbf{4.1} to take experiments on recovering water body from reconstructed images in cloud days. In order to recover water body, images are collected from Landsat 8 will be crop to be size of $1200 x 1600$ pixels, equals $3 x 4$ tiles, each tiles has size of $400 x 400$ pixels.  
 
 For segmentation, NDWI-index is used to mask out water body. For comparison to ground truth, the most nearest SAR-image collected from Sentinel-1 will be used. 
@@ -211,7 +210,7 @@ and the display images only contain pixel that having NDWI-index above 0 (which 
 
 \subparagraph{Explanation for figures} Note that, \textbf{(a)} is covered by cloud, \textbf{(b)} is recovered and \textbf{(c)} is collected from Sentinel-1. 
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\subfloat[60.6114 $km^2$]{
 		\includegraphics[width=0.32\linewidth]{figures/raw20160104_60_6114.png}
@@ -222,7 +221,6 @@ and the display images only contain pixel that having NDWI-index above 0 (which 
 	\subfloat[269.2041 $km^2$]{
 		\includegraphics[width=0.32\linewidth]{figures/20160112_269_2041.png}
 	} 
-	
 	\centering
 	\caption{
 		\textbf{(a, b)} Landsat 8, Jan 4th 2016.
@@ -230,7 +228,7 @@ and the display images only contain pixel that having NDWI-index above 0 (which 
 \end{figure}
 
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\subfloat[51.8346 $km^2$]{
 		\includegraphics[width=0.32\linewidth]{figures/raw20160815_51_8346.png}
@@ -249,7 +247,7 @@ and the display images only contain pixel that having NDWI-index above 0 (which 
 	\end{figure}
 
 
-\begin{figure}[h!]
+\begin{figure}[]
 \centering
 \subfloat[31.2336 $km^2$]{
 	\includegraphics[width=0.32\linewidth]{figures/raw20170802_31_2336.png}
@@ -271,7 +269,7 @@ and the display images only contain pixel that having NDWI-index above 0 (which 
 
 \subsubsection{Easiest case: Simple cloud shape}
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\subfloat[]{
 		\includegraphics[width=0.24\linewidth]{figures/cont5_masked.png}
@@ -293,7 +291,7 @@ The result shows that for small regions, both methods could work well, but for a
 
 \subsubsection{Average case: Multi-simple cloud shape}
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\subfloat[]{
 		\includegraphics[width=0.24\linewidth]{figures/med_1.png}
@@ -313,7 +311,7 @@ The result shows that for small regions, both methods could work well, but for a
 
 \subsubsection{Hardest case: Real cloud}
 
-\begin{figure}[h!]
+\begin{figure}[]
 	\centering
 	\subfloat[]{
 		\includegraphics[width=0.24\linewidth]{figures/complext_1.png}
