@@ -92,18 +92,24 @@ Water resources monitoring provides information about the state and trend of mon
 
 Nowadays remote sensing techniques, when combines with Computing, they are used in different area of research for monitoring. For examples with internet of Things (IoT), a smart water quality monitoring system for Fuji Islands, located in the vast Pacific Ocean, is proposed in \cite{Prasad2015}. Besides that, water level monitoring and management of dams \cite{Sreekar2018} could help people on automatically closing or opening gate of the dam, depending on current water level in dams is less or higher than optimum value.
 
-
 \subparagraph{Water body segmentation problems} In order to reach above aims, many different water body segmentation techniques are widely used. Each techniques could be used on some certain types. For example with multi-spectral data like Landsat, an automatic mapping water bodies approach to detect waterline boundaries is proposed in \cite{Verpoorter2012}, or applying Principle Component Analysis, which is a famous image processing technique to find out most important dimensions of data, to find out segmentation and morphology of open water bodies \cite{Jorge2006}. There are also many approaches for radar optical images. With SAR images provided by Sentinel-1, water volumes retained at reservoirs can be monitored after creating an interferometric of area \cite{Amitrano2014}, detect surface water bodies using Valley-Emphasis method \cite{Nguyen2016}.
 
 \subparagraph{Water body recovery problems} Due to limitations of optical satellites like Landsat, MODIS, on the days that surface is covered by thick clouds, the acquired image from those devices usually suffer missing information, caused to not able to use because we can't see anything under cloudy cover. This lead to many problems on segmentation system which uses images from those satellites. In order to solve this problems, many methods have been proposed in order to recover the missing data. This kind of problem is similar to 
 in-painting method in image processing field. There are variety of approaches, from using a multi-channel non-local total variation model \cite{Cheng2014}, to applying neural networks to recover\cite{Zhang2018}. Almost these method use one or more undamaged images as reference. 
 
-\subparagraph{Prediction problems} Another problem that Machine Learning, especially Artificial Intelligence has an attractable performance is weather forecasting, a sub-prediction problem. Weather forecasting focuses mainly on the prediction of weather conditions, such as wind direction, wind speed, humidity, rainfall, temperature etc., in the given future time. In Stanford University, a temperature attribute in term of the maximum and minimum value, is being forecasted in next seven days, given weather data for the past two days \cite{Holmstrom2016MachineLA}, using Regression Model. A survey of existing research on applying Artificial Neural Networks (ANNs) to weather prediction is also presented \cite{Culclasure2013UsingNN}.
+\subparagraph{Prediction problems} Another problem that Machine Learning, especially Artificial Intelligence has an attractable performance is weather forecasting, a sub-prediction problem. Weather forecasting focuses mainly on the prediction of weather conditions, such as wind direction, wind speed, humidity, rainfall, temperature etc., in the given future time. In Stanford University, a temperature attribute in term of the maximum and minimum value, is being predicted in next seven days, given weather data for the past two days \cite{Holmstrom2016MachineLA}, using Regression Model. A survey of existing research on applying Artificial Neural Networks (ANNs) to weather prediction is also presented \cite{Culclasure2013UsingNN}.
 
 \section{Contributions} % 1 pages
 
-- Combination: Detect anomaly point in order to detect point of time, that water body act anomaly season
-- Short introduction of 3 part...
+In this thesis, we would like to apply solutions from prediction problems, in order to solve the following things for goal of monitoring reservoirs:
 
-\section{Outlines} % 1 pages
-- .....
+\begin{itemize}
+	\item \textit{Water body recovery problems}, As we've known, to predict a missing area in a remote sensing, we need to have at least one image called \textbf{reference}, containing about spectral, spatial or temporal information  (the temporal information only reflects the image in another point of time in the past). Water body is mainly affected by weather and other conditions, such as water flow from other rivers to the lake, elevation and altitude of reservoir, etc. Time-series of data may provide the \textit{periodicity} or at least \textbf{trend} of water body, for example its area is increasing or decreasing, it usually has a large or small area of water body in some months. So that, we will try to apply a periodicity of weather in order to get higher accuracy in \ref{chap-3-recover-water-body}.
+
+	\item \textit{Monitoring water body problems} Another thing that we could analyze from predicted image is about the shape, area, volume and so on. We could compare these aspects with the same time in the past (for an example, the related month in the previous year). This leads to a very famous problem \textbf{Anomaly Detection}. This problems is not only famous in data science, but also in remote sensing\cite{Grosklos2015,Yang2019}. If the techniques used in detection methods are good enough, the monitoring system will help us quickly detect strange scenarios in remote sensing time-series data. This results can be applied in many sectors such as water resource management, irrigation, and disaster prediction and prevention. The latter application is also our long-term goal where a network of interconnected reservoirs and dams  within a river basin are being monitored in order to derive from short to mid-term prediction of water level.
+\end{itemize}
+
+
+\section{Outlines} 
+
+.... 
