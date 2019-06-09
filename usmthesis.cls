@@ -239,7 +239,6 @@
 \RequirePackage{xpatch}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
-\usepackage{fourier}
 \RequirePackage[T5]{fontenc}
 \usepackage{textcomp}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -118,9 +118,24 @@ tocpage,  % Put ``Page'' at top of ToC. Add lotpage, lofpage if
 %% There are a number of different packages available, but
 %% unfortunately they tend not to work well together!
 %% I'm using algorithmicx, specifically algpseucode, here.
+
 \usepackage{algpseudocode}
 \usepackage{algorithm}
 \usepackage{indentfirst}
+\usepackage{bm}
+\usepackage{mathtools} 
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+
+\input{math_commands.tex}
+
+% Make \[ \] math have equation numbers
+\DeclareRobustCommand{\[}{\begin{equation}}
+\DeclareRobustCommand{\]}{\end{equation}}
+
 
 %% Enter particulars about your thesis HERE
 % Your Name
