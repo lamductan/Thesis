@@ -1,7 +1,21 @@
-\chapter{Conclusions}
+\chapter{Conclusions and Future Works}
 \label{chap-6-conclusions}
 \begin{ChapAbstract}
-In this chapter, ...
+In this chapter we would like to summary what we've done in this thesis, with potential result when applying solution from sequence prediction into solving some interesting remote sensing problems, including water body recovery and water body area prediction over the time. Then finally, some of future works are provided.
 \end{ChapAbstract}
 
+\section{Conclusion}
 
+We've almost done on bringing in data at scale and machine learning techniques with the goal of experimenting and designing end-to-end models to solve:
+
+\begin{enumerate}
+	\item \textbf{Landsat clouds covered image Recovery} With Landsat satellites, it is not enough data for whole cycle of water body in a year, but the \textbf{trend} of water body in few recent months might feed temporal information into our modified model from STS-CNN method. The result of chapter \ref{chap-3-recover-water-body} might be better if the input is directly cropped on water body boundaries, without resizing or stretching. Recovery model with continous data as reference should be more strictly trained, even if two main parts (prediction model in order to predict next image as reference and recovery model) are pre-trained separately, because of each difficulties.
+	
+	\item \textbf{Making Prediction with MODIS and Sentinel-1 Data} The data is more abundant that we could build up a dataset which contains full cycle of water body information in a whole year. This temporal attribute is very useful for prediction model to predict the water body in the near future. SAR-image from Sentinel-1 satellite has many benefits, not only being unaffected from cloud cover like optical satellites imagery, but alos can provide depth information of water body. Combining with area, the follow-up remote sensing problem might be solved: \textbf{Water body volume prediction}.
+\end{enumerate}
+
+\section{Future works}
+
+Our works show that an end-to-end models can solve some different problems in remote sensing. Climate change, reservoirs, hydro power-plants, and irrigation systems have been identified as major factors which are redefining hydrological cycles in agricultural areas. In the Greater Mekong subregion, the home of more than 300 million people, the trend is increasing and visibly recognized year after year. Being the country at the end of the Mekong River, Vietnam has been enjoying numerous advantages from the river for centuries. but now is facing big threats of droughts and unpredictable floods. Causes have been named to a large number of reservoirs and hydro power-plant being built along the river, spreading from Laos, Thailand, and Cambodia. A big external factor is giant reservoirs in Tibet, China, where the river starts. A more idea is observation of inter-connected rivers, lakes, reservoirs in many different countries to manage whole large area of Mekong river here, as water body is not affected by itself, but also by weather, amount of rain and many different tributaries. For example, there are many different rivers that have flown into the Mekong river: Menam Mun River (Thailand), Xe Don (Laos) or Tonlé San (Cambodia). 
+
+Served as an exemplar, once hydrological events are becoming predictable in the Greater Mekong subregion, it can be applied to many other agricultural areas in the world. If following up this idea and expanding it, we could design a system can monitors and predict hydrological disasters ahead of time, facilitating appropriate reaction time for farmers and governments. The abundance of remote sensing data with free cost from NASA and ESA has giving us a big advantage in tacking this problem. With a long operational time since before 1980, satellite programs such as MODIS and Landsat have generated precious historical Earth Observatory data. Plus the Corpernicus program from ESA with a series of Sentinel satellites, including optical and radar instruments, having been launched since 2014, the project is just in the right time for being solved.
