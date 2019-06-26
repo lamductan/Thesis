@@ -600,7 +600,7 @@
 %\vspace*{10mm}
 %
 
-UNIVERSITY OF NATURAL SCIENCE\\
+VNU-HCM, UNIVERSITY OF SCIENCE\\
 FACULTY OF INFORMATION TECHNOLOGY\\
 HONOR PROGRAM\\
 \vspace*{50pt}
@@ -623,7 +623,7 @@ HONOR PROGRAM\\
 \endgroup
 
 \vspace*{150pt}
-TP HCM, năm \@submityear\par
+Ho Chi Minh City, \@submityear\par
 %
 %\vspace*{20mm}
 \end{titlepage}
@@ -638,7 +638,7 @@ TP HCM, năm \@submityear\par
 \fontfamily{phv}\selectfont
 \begingroup
 \fontsize{14pt}{16pt}\selectfont%
-UNIVERSITY OF NATURAL SCIENCE\\
+VNU-HCM, UNIVERSITY OF SCIENCE\\
 FACULTY OF INFORMATION TECHNOLOGY\\
 HONOR PROGRAM\\
 \endgroup
