@@ -75,18 +75,18 @@ MSE \textrm{ = } \frac{1}{mn} \sum_{i \textrm{ = } 1}^{m} \sum_{j \textrm{ = } 1
 \end{equation}
 
 \vspace{0.3cm}
-Table of comparison:
+Here is table of comparison. Pixel value are scale to $(0..1)$ and $(0..255)$ (original has pixel range from $0..65535$). All are calculated by $PSNR$ (higher is better).
 
-\begin{table}[]
+\begin{table}[h!]
 	\centering
-	\begin{tabular}{|c|c|c|c|}
+	\begin{tabularx}{\textwidth}{|c|Y|Y|Y|}
 		\hline
-		& STS-CNN & \begin{tabular}[c]{@{}c@{}}Modified model \\ (0..1)\end{tabular} & \begin{tabular}[c]{@{}c@{}}Modified model \\ (0..255)\end{tabular} \\ \hline
+		& STS-CNN & Modified model (0..1) & Modified model (0..255) \\ \hline
 		Simple cloud         & 19.9098 & \textbf{27.00188}                                                & 26.7391                                                            \\ \hline
 		Simple multi-cloud   & 15.6941 & \textbf{23.8445}                                                 & 23.80995                                                           \\ \hline
 		Real (complex) cloud & 12.8381 & \textbf{19.70776}                                                & 19.5976                                                            \\ \hline
-	\end{tabular}
-	\caption{Comparison between proposed model to modified model. Pixel value are scale to $(0..1)$ and $(0..255)$ (original has pixel range from $0..65535$). All are calculated by $PSNR$. Higher is better}
+	\end{tabularx}
+	\caption{Comparison between proposed model to modified model}
 \end{table}
 
 \section{Optimization}
@@ -128,13 +128,13 @@ This is a comparison between above methods. Visualization is available at \ref{e
 
 \begin{table}[]
 	\centering
-	\begin{tabular}{|c|c|c|}
+	\begin{tabularx}{\textwidth}{|Y|Y|Y|}
 		\hline
-		& \begin{tabular}[c]{@{}c@{}}Time-Distributed\\ Layers\end{tabular} & LSTM-Conv2D \\ \hline
+		& Time-Distributed Layer & LSTM-Conv2D \\ \hline
 		Simple cloud         & \textbf{30.5584}                                                  & 23.4441     \\ \hline
 		Simple multi-cloud   & \textbf{29.9230}                                                  & 24.0554     \\ \hline
 		Real (complex) cloud & \textbf{30.4467}                                                  & 26.4210     \\ \hline
-	\end{tabular}
+	\end{tabularx}
 	\caption{Comparison when applying time-series images for predicting next image as reference.}
 \end{table}
 
