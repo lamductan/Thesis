@@ -172,13 +172,30 @@ Convolutional Neural Networks (CNNs) are a specialized kind of feedforward neura
 
 % Add figure of convolution operation in Deep Learning Book
 
-\section{Recurrent Neural Networks}
-\subsection{Vanilla Recurrent Neural Networks}
 
+\section{Recurrent Neural Networks}
+In this section, we introduce briefly Recurrent Neural Networks (RNNs), which is the type of neural networks mainly used in this work. RNNs show their significant performance in many problems where input data are in form of sequence, such as language model or time-series predictions. The original idea of RNNs comes from the sharing parameter mechanism, which is presented in CNNs. However, while CNNs is only capable of sharing parameter across a small number of neighbors, RNNs allow to share parameters through further neigbors, maybe hundred-length sequences.  
+
+\subsection{Vanilla Recurrent Neural Networks}
+Vanilla Recurrent Neural Network is the most basic and natural when humans first think about applying recurrent mechanism in neural networks. In a Vanilla RNN, each output at index $\displaystyle t$ is a function of the output at index $\displaystyle t - 1$, except output at index $\displaystyle 0$ (it is usually zero-initialized or also learnable parameters). The typical function in RNN is:
+\[ h_t = \tanh \left( W\begin{pmatrix} x_t \\ h_{t-1} \end{pmatrix} \right) \]
+
+However, Vanilla RNNs have low performance on long sequence data, due to vanishing and exploiding gradient. Exploiding gradient, which means that gradient's value becomes too large through recurrent backpropagation (due to multiple multiplication with many greater-than-1 numbers), is rarely occured, but its consequence is huge. Clipping gradient is one of quite efficient solution for this problem. Howerver, vanishing gradient can't be solved by this method. Vanishing gradient happens when a gradient is multipled by many smaller-than-1 numbers and reaches zero, which leads to the reduction of the weight correspondant to this gradient.
 
 \subsection{Long-Short Term Memory Neural Networks}
+There are a number of variants of LSTM. In this work, we use the LSTM with "peephole connections" of Gers and Schmihuber (2000) %cite%
+, which makes use of information at the previous cell state to be a part of input of gate layers.
 
-\subsection{Convolution Long-Short Term Memory Neural Networks}
+\[ f_t = \sigma(W_f[C_{t-1}, h_{t-1},x_t] + b_f) \]
 
+\[ i_t = \sigma(W_i[C_{t-1}, h_{t-1},x_t] + b_i) \]
+
+\[ \hat{C}_t = \tanh(W_c[C_{t-1}, h_{t-1},x_t]) \]
+
+\[ C_t = f_t * C_{t-1} + i_t * \hat{C}_t \]
+
+\[ o_t = \sigma(W_o[C_{t}, h_{t-1},x_t] + b_o) \]
+
+\[ h_t = o_t * \tanh(C_t) \]
 
 \section{Summary}
