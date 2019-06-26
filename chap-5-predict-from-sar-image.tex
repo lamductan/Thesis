@@ -122,7 +122,7 @@ Specification:
 % Show demo 12 input in 1 line
 
 
-The time-series data in one year (one file per month) has been divided into tile of \textit{128 px } x \textit{128 px}. All tiles belong to water body are predicted but only area and boundaries of water body are evaluated. Figure \ref{fig:inputTs} show the sample input from June 2018 to May 2019, and the groundtruth of the next point of time, which is retrieved in June 2019, is shown at Figure \ref{fig:outputTs}.
+The time-series data in one year (one file per month) has been divided into tile of \textit{128 px } x \textit{128 px}. All tiles belong to wate body are predicted but only area and boundaries of water body are evaluated. Figure \ref{fig:inputTs} show the sample input from June 2018 to May 2019, and the groundtruth of the next point of time, which is retrieved in June 2019, is shown at Figure \ref{fig:outputTs}.
 
 \begin{figure}[h!]
 	\centering
@@ -144,16 +144,17 @@ The prediction result of model, from Feb 2019 to June 2019 is shown in table \re
 
 \begin{table}[h!]
 	\centering
-	\begin{tabular}{|c|c|c|c|}
+	\begin{tabularx}{\textwidth}{|c|Y|Y|Y|Y|}
 		\hline
-		\textbf{Month} & \textbf{Groundtruth Area (km\textasciicircum{}2)} & \textbf{Predicted Area (km\textasciicircum{}2)} & \textbf{PSNR (higher is better)} \\ \hline
-		2              & 282.5946                                          & 287.7469                                        & 28.5720                          \\ \hline
-		3              & 296.5101                                          & 301.0503                                        & 27.3969                          \\ \hline
-		4              & 301.2402                                          & 276.8264                                        & 22.9851                          \\ \hline
-		5              & 273.7712                                          & 273.0462                                        & 27.9394                          \\ \hline
-		6              & 243.2829                                          & 217.7548                                        & 23.2120                          \\ \hline
-	\end{tabular}
-	\caption{Prediction result. Graph at Figure \ref{fig:comparePredict}}
+		\textbf{Month} & \textbf{Groundtruth Area ($km^2$)} & \textbf{Predicted Area ($km^2$)} & \textbf{True Prediction Ratio (\%)} & \textbf{False Prediction Ratio (\%)}\\ \hline
+		2              & 282.5946                                          & 287.7469                                        & 98.32 & 3.44                         \\ \hline
+		3              & 296.5101                                          & 301.0503                                        & 97.02 & 
+		4.44                          \\ \hline
+		4              & 301.2402                                          & 276.8264                                        & 87.60 & 4.68                         \\ \hline
+		5              & 273.7712                                          & 273.0462                                        & 96.39 & 3.35                          \\ \hline
+		6              & 243.2829                                          & 217.7548                                        & 86.40 & 3.47                         \\ \hline
+	\end{tabularx}
+	\caption{Area prediction result and ratio}
 	\label{table:predictValue}
 \end{table}
 
@@ -162,7 +163,7 @@ The prediction result of model, from Feb 2019 to June 2019 is shown in table \re
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{figures/comparePredict.png}
-	\caption{Different between groundtruth and prediction.}
+	\caption{Area comparison between groundtruth and prediction.}
 	\label{fig:comparePredict}
 \end{figure}
 
@@ -203,7 +204,7 @@ Below are prediction and groundtruth for Tri An Reservoir water body, from Febru
 \subsection{Example with anomaly detection}
 \label{section:anomalyDetection}
 
-One usage of sequence prediction output is about anomaly detection. This problem is usually formulated as finding outlier data points, relative to some standard or usual signal. In this chapter, the data points show water body area of Tri An Reservoir. The below chart show observation of Tri An reservoir area in 3 years, from 2016-2018.
+One usage of sequence prediction output is about anomaly detection. This problem is usually formulated as finding outlier data points, relative to some standard or usual signal. In this chapter, the data points show water body area of Tri An Reservoir. The below chart show observations of Tri An reservoir area in 3 years, from 2016-2018.
 
 \begin{figure}[h!]
 	\centering
@@ -212,24 +213,22 @@ One usage of sequence prediction output is about anomaly detection. This problem
 	\label{fig:observation}
 \end{figure}
 
-Using our model, the prediction is:
+Following observations, the groundtruth area of water body in 2016, 2017 and 2018 are $189.6926 km^2$, $242.4104 km^2$ and $178.4857 km^2$ respectively. While using our model, the prediction is approximately $189.6926 km^2$. See more about visualization at Fig. \ref{fig:anomalyVis} and graph for comparison at Fig. \ref{fig:anomalyComp}
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.9\textwidth]{figures/20170706T110259.png}
 	\caption{Prediction for July 2017, using 12 previous data points (from July 2016 to Jun 2017)}
+	\label{fig:anomalyVis}
 \end{figure}
-
-The predicted area is approximately $189.6926 km^2$, while groundtruth value is about $242.4104 km^2$.
 
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.9\textwidth]{figures/anomaly.png}
 	\caption{Prediction (the red point) and groundtruth (the green line) on July 2017}
+	\label{fig:anomalyComp}
 \end{figure}
-
-In 2016, the captured area is $192.6053 km^2$, where area is $178.4857 km^2$.
 
 \section{Conclusions}
 
