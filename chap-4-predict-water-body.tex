@@ -181,7 +181,9 @@ For comparision, we completed the following baseline models:
 
 \subsection{Evaluation measures}
 \begin{itemize}
-    \item \textbf{Root Mean Square Error of Predicted Water area}
+    \item \textbf{Root Mean Square Error of Predicted Water area ($W_RMSE$)}: Because of highly focusing on water body, we use the root mean squared error on the predicted groundtruth water area. The water area is derived by multiplication of the number of lake water pixel in a groundtruth/predict 2D image and $0.25^2$ (the pixel size of MODIS Terra/Aqua image).
+    \item \textbf{Normalized Root Mean Square Error of Predicted Water area ($W_NRMSE$)} that is simply the normalization of $W_RMSE$ by divided by mean of groundtruth water area array of image test set.
+    \item \textbf{True Prediction Ratio} or \textbf{Recall}: fdsfa
 \end{itemize}
 
 \section{Conclusions}
