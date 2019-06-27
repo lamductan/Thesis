@@ -181,8 +181,131 @@ For comparision, we completed the following baseline models:
 
 \subsection{Evaluation measures}
 \begin{itemize}
-    \item \textbf{Root Mean Square Error of Predicted Water area}
+    \item \textbf{Mean Squared Error (MSE)} that is the mean squared error of predicted and groundtruth image. It is also the loss function when training our models.
+    \item \textbf{Structural Similarity (SSIM)} that is used for measuring the similarity between two images. %cite
+    \item \textbf{Root Mean Squared Error of Predicted Water area ($W\_RMSE$)}: because of highly focusing on water body, we use root mean squared error of water area extracted from 2D groundtruth and predict image. Water area is derived by product of the number of the lake and $0.25^2 km^2$, which is pixel size of MODIS Terra/Aqua image data.
+    \item \textbf{Normalized Root Mean Squared Error of Predicted Water area ($W\_NRMSE$)} that is simply the normalized version of $W_RMSE$ by dividing $W_RMSE$ by mean of water area array of image test set.
+    \item \textbf{True Prediction Ratio} or \textbf{Recall} that is the fraction of the number of pixels that is predicted to be lake's pixel that are successfully retrieved.
+    \[ \texttt{recall} = \frac{|\{\texttt{pixels predicted as lake's pixels}\} \cap \{\texttt{lake's pixels}\}|}{|\{\texttt{lake's pixels}\}|} \]
+    \item \textbf{False Discovery Rate (FDR)} that is the rate that a pixel predicted as lake's pixel is truly not.
+    \[ \texttt{FDR} = \frac{\texttt{number of false predictions}}{]\texttt{total number of predictions}} \]
+    \item \textbf{Area under the Precision-Recall Curve (PR\_AUC)} that summarizes a precision-recall curve as the weighted mean of precisions achieved at each threshold, with the increase in recall from the previous threshold used as the weight:
+    \[ \texttt{PR\_AUC} = \sum_n{R_n - R_{n-1}}{P_n}, \] %cite average_precision_score sklearn.metrics
+    where $P_n$ and $R_n$ are the precision and recall at the nt threshold. PR\_AUC is a better metric for our goal given that the dataset is class-imbalanced. %cite 180 Choi-Dissertation 
 \end{itemize}
+
+\subsection{Results}
+We evaluate the prediction performance of all models in both term of regression and classification. The regression results are reported in table %cite
+and classification results are reported in table. %cite
+
+Table shows that our methods yeild a higher loss and lower structural similarity than the traditional ConvLSTM model. PredRNN++ performs better in short-term prediction, and the results decrease dramatically when the number of prediction steps increases. The under-expected regression scores of our models result from the grid inference method. It divides the image to patches, which makes a huge influence on the overall regression evaluations.
+
+In contrast with the low regression scores, our methods perform better in classification metrics. The different of classification metrics across multiple methods lies principally on the neighbor region of the lake's boundary, rather than the lake's permanent water region and the far outside lake's region. The better performance of our methods demonstrates that they are more suitable for hydrological prediction, which is the primary goal of this work.
+
+The low recall along with the low FDR of PredRNN++ results from the pixel zero prediction in long-term predictions. ACG\_32 archives the second rank in recall, the first rank in FDR and the first rank in PR\_AUC in 1-timestep prediction, showing that ACG\_32 can properly capture the temporal classification of lake's shoreline region. Figure shows mean of metrics of each predicted image at each timesteps (number  in the table is mean across all timesteps in one prediction). ACG\_32 performs better in W\_NRMSE and PR\_AUC almost all timesteps and performs better than ConvLSTM and PredRNN++ in Recall.
+
+\begin{figure}
+    \begin{center}
+    \begin{tabular}[b]{c}
+      \includegraphics[width=.4\linewidth]{figures/chap4_w_nrmse_timesteps.png} \\
+      \small (a) Water NRMSE
+    \end{tabular}
+    \begin{tabular}[b]{c}
+      \includegraphics[width=.4\linewidth]{figures/chap4_pr_auc_timesteps.png} \\
+      \small (b) PR\_AUC
+    \end{tabular}
+    \begin{tabular}[b]{c}
+        \includegraphics[width=.4\linewidth]{figures/chap4_recall_timesteps.png} \\
+        \small (c) Recall
+    \end{tabular} 
+    \begin{tabular}[b]{c}
+        \includegraphics[width=.4\linewidth]{figures/chap4_FDR_timesteps.png} \\
+        \small (d) FDR
+    \end{tabular}
+    \end{center}
+    \caption[]{Comparisons of metrics at each timesteps of multiple methods}
+    \label{fig:metrics-comparisons-timesteps}
+\end{figure}
+
+In Figure \ref{fig:chap4-test-30}, we show an example of the groundtruth and predicted images with metrics plot. Models predict 10 timesteps in the future. This test is at timesteps 241 of year 2016, which is from 21 August to 28 August 2016. As we see in this figure, both attention methods yeild better result in 3 in 4 metrics, except FDR. Especially in long-term prediction, attention-based methods perform better performance. It demonstrates that attention mechanism helps traditional ConvLSTM to remember the periodic characteristic better.  
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}[b]{c}
+            \small Groundtruth \enspace
+            \includegraphics[width=0.9\textwidth]{figures/chap4/10/30/groundtruth.png} \\
+        \end{tabular}
+        \begin{tabular}[b]{c}
+            \small ConvLSTM \quad
+            \includegraphics[width=0.9\textwidth]{figures/chap4/10/30/convlstm.png} \\
+        \end{tabular}
+        \begin{tabular}[b]{c}
+            \small PredRNN++
+            \includegraphics[width=0.9\textwidth]{figures/chap4/10/30/predrnn_pp.png} \\
+        \end{tabular}
+        \begin{tabular}[b]{c}
+            \small ACG\_64 \qquad
+            \includegraphics[width=0.9\textwidth]{figures/chap4/10/30/attention_clstm_grid.png} \\
+        \end{tabular}
+        \begin{tabular}[b]{c}
+            \small ACG\_32 \qquad
+            \includegraphics[width=0.9\textwidth]{figures/chap4/10/30/attention_clstm_grid_32.png} \\
+        \end{tabular}
+
+        \begin{tabular}[b]{c}
+            \includegraphics[width=.4\linewidth]{figures/chap4/10/30/w_nrmse.png} \\
+            \small Water NRMSE
+          \end{tabular}
+          \begin{tabular}[b]{c}
+            \includegraphics[width=.4\linewidth]{figures/chap4/10/30/pr_auc.png} \\
+            \small PR\_AUC
+          \end{tabular}
+          \begin{tabular}[b]{c}
+              \includegraphics[width=.4\linewidth]{figures/chap4/10/30/recall.png} \\
+              \small Recall
+          \end{tabular} 
+          \begin{tabular}[b]{c}
+              \includegraphics[width=.4\linewidth]{figures/chap4/10/30/fdr.png} \\
+              \small FDR
+          \end{tabular}
+    \end{center}
+    \caption[]{Prediction example of multiple methods and groundtruth with metrics}
+    \label{fig:chap4-test-30}
+\end{figure}
+
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}[b]{c}
+            \includegraphics[width=.4\linewidth]{figures/chap4/w_nrmse_all_tests.png} \\
+            \small Water NRMSE
+          \end{tabular}
+          \begin{tabular}[b]{c}
+            \includegraphics[width=.4\linewidth]{figures/chap4/pr_auc_all_tests.png} \\
+            \small PR\_AUC
+          \end{tabular}
+          \begin{tabular}[b]{c}
+              \includegraphics[width=.4\linewidth]{figures/chap4/recall_all_tests.png} \\
+              \small Recall
+          \end{tabular} 
+          \begin{tabular}[b]{c}
+              \includegraphics[width=.4\linewidth]{figures/chap4/fdr_all_tests.png} \\
+              \small FDR
+          \end{tabular}
+    \end{center}
+    \caption[]{Performance of all methods at all tests}
+    \label{fig:chap4-performance-all-tests}
+\end{figure}
+
+Figure \ref{fig:chap4-performance-all-tests} indicates the performance of all methods in all metrics at all tests. The visualization shows that all methods yeild worse results in tests 25 to 35, which are from July to September. This time is in the wet season at Mekong Region %cite Water balance analysis for the Tonle Sap Lake–ﬂoodplain system
+, where flooding and the associated water level increase in the Mekong River causes the Tonle Sap River to change flow direction and flow towards the northwest (upstream) into Tonle Sap Lake (see Figure ).
+
+\begin{SCfigure}
+    \caption[]{Monthly average water level of Tonle Sap Lake at Kampong Luong (continuous line – right vertical axis) and inundated area (circles – left vertical axis). The observed minimum and maximum monthly average water levels have been illustrated with dotted bars}
+    \includegraphics[width=.65\textwidth]{figures/chap4/tonlesap_avg_area_with_floodplain.png}
+    \label{fig:chap4-tonlesap-avg-area}
+\end{SCfigure}
+
 
 \section{Conclusions}
 
