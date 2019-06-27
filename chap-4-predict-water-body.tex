@@ -170,13 +170,13 @@ We compared performance of our method to Convolution LSTM (ConvLSTM) and a new m
 \subsubsection{Implementation Details}
 We implement our method with Tensorflow 1.12. %cite
 For training the model, we used Adam %cite
-with the mini-batch of 8 inputs. The training was done in a machine equipped with Intel Xeon E5-2650, 377GB RAM, one Nvidia Tesla P100 and CUDA 9.0.
+with the mini-batch of 8 inputs. The training was done in a machine equipped with Intel Xeon E5-2650, 377GB RAM, one Nvidia Tesla P100 and CUDA 9.0. We test our methods in both two cases: 32 and 64 patch size. For 32 or 64 pixel patch size, in training and validation phase, we feed model with a tensor or a list of tensors whose spatial shape is equal to the patch size. Next, in inference phase, historical images are splitted into patches (or any integers lower than the shape of a full shape img.).For simplicity, we abbreviate these two models as $ACG\_64$ and $ACG\_32$ respectively according to their patch size.  
 
 \subsubsection{Baselines}
 For comparision, we completed the following baseline models:
 \begin{itemize}
-    \item \textbf{ConvLSTM}: We use four stacked ConvLSTM layers with filter size 128, 64, 64, 1 respectively. 
-    \item \textbf{PredRNN++}: We use PredRNN++ with filter size 128, 64, 64, 1 respectively
+    \item \textbf{ConvLSTM}: We use four stacked ConvLSTM layers with filter size 128, 64, 64, 1 respectively. Our experiments show that \textbf{ConvLSTM} is comparable with the highest score.
+    \item \textbf{PredRNN++}: We use PredRNN++ with filter size 128, 64, 64, 1 respectively.
 \end{itemize}
 
 \subsection{Evaluation measures}
@@ -190,15 +190,68 @@ For comparision, we completed the following baseline models:
     \item \textbf{False Discovery Rate (FDR)} that is the rate that a pixel predicted as lake's pixel is truly not.
     \[ \texttt{FDR} = \frac{\texttt{number of false predictions}}{]\texttt{total number of predictions}} \]
     \item \textbf{Area under the Precision-Recall Curve (PR\_AUC)} that summarizes a precision-recall curve as the weighted mean of precisions achieved at each threshold, with the increase in recall from the previous threshold used as the weight:
-    \[ \texttt{PR\_AUC} = \sum_n{R_n - R_{n-1}}{P_n}, \] %cite average_precision_score sklearn.metrics
+    \[ \texttt{PR\_AUC} = \sum_n{(R_n - R_{n-1})}{P_n}, \] %cite average_precision_score sklearn.metrics
     where $P_n$ and $R_n$ are the precision and recall at the nt threshold. PR\_AUC is a better metric for our goal given that the dataset is class-imbalanced. %cite 180 Choi-Dissertation 
 \end{itemize}
 
 \subsection{Results}
-We evaluate the prediction performance of all models in both term of regression and classification. The regression results are reported in table %cite
-and classification results are reported in table. %cite
 
-Table shows that our methods yeild a higher loss and lower structural similarity than the traditional ConvLSTM model. PredRNN++ performs better in short-term prediction, and the results decrease dramatically when the number of prediction steps increases. The under-expected regression scores of our models result from the grid inference method. It divides the image to patches, which makes a huge influence on the overall regression evaluations.
+\begin{table}[h]\footnotesize
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    \multirow{2}{*}{\textbf{Metrics}} & \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Steps\\ Predict\end{tabular}}} & \multirow{2}{*}{\textbf{ConvLSTM}}                                  & \multirow{2}{*}{\textbf{PredRNN++}}                                 & \multirow{2}{*}{\textbf{ACG\_64}}                                   & \multirow{2}{*}{\textbf{ACG\_32}}                          \\
+                                      &                                                                                   &                                                                     &                                                                     &                                                                     &                                                            \\ \hline
+    \multirow{4}{*}{\textbf{mse}}     & 1                                                                                 & \begin{tabular}[c]{@{}c@{}}0.0152 \\ (0.0115)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.0103 \\ (0.0072)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}0.0104\\  (0.0068)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.0111\\  (0.007)\end{tabular}  \\ \cline{2-6} 
+                                      & 3                                                                                 & \textbf{\begin{tabular}[c]{@{}c@{}}0.0104\\  (0.0063)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.011\\  (0.0066)\end{tabular}           & \textbf{\begin{tabular}[c]{@{}c@{}}0.0106\\  (0.0064)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.0116\\  (0.0062)\end{tabular} \\ \cline{2-6} 
+                                      & 10                                                                                & \textbf{\begin{tabular}[c]{@{}c@{}}0.0152\\  (0.0058)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.0176\\  (0.0067)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.0146\\  (0.0058)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.0161\\  (0.0056)\end{tabular} \\ \cline{2-6} 
+                                      & 20                                                                                & \textbf{\begin{tabular}[c]{@{}c@{}}0.0179\\  (0.0042)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.022\\  (0.0054)\end{tabular}           & \textbf{\begin{tabular}[c]{@{}c@{}}0.0174\\  (0.0041)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.0187\\  (0.0048)\end{tabular} \\ \hline
+    \multirow{4}{*}{\textbf{ssim}}    & 1                                                                                 & \begin{tabular}[c]{@{}c@{}}0.5468\\  (0.1578)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.5835\\  (0.1369)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}0.5836\\  (0.1302)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.5625\\  (0.1318)\end{tabular} \\ \cline{2-6} 
+                                      & 3                                                                                 & \textbf{\begin{tabular}[c]{@{}c@{}}0.5855\\  (0.1229)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.5754\\  (0.1223)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.5754\\  (0.1205)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.5488\\  (0.1147)\end{tabular} \\ \cline{2-6} 
+                                      & 10                                                                                & \textbf{\begin{tabular}[c]{@{}c@{}}0.5046\\  (0.1035)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.4869\\  (0.1044)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.4954\\  (0.0981)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.4583\\  (0.0916)\end{tabular} \\ \cline{2-6} 
+                                      & 20                                                                                & \textbf{\begin{tabular}[c]{@{}c@{}}0.4561\\  (0.0727)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.4347\\  (0.0739)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.4461\\  (0.0667)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.4027\\  (0.0621)\end{tabular} \\ \hline
+    \end{tabular}
+    \caption[]{Tonle Sap lake hydrological prediction performance in term of regression metrics. With regard to SSIM, higher score is better. Otherwise, lower MSE shows a better performance.}
+    \label{tab:chap4-regression-metrics}
+\end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[h]\footnotesize
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    \textbf{Metrics}                                                                                            & \textbf{\begin{tabular}[c]{@{}c@{}}Steps \\ Predict\end{tabular}} & \textbf{ConvLSTM}                                                   & \textbf{PredRNN++}                                                  & \textbf{ACG\_64}                                                    & \textbf{ACG\_32}                                                    \\ \hline
+    \multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Water Area \\ RMSE\end{tabular}}}                        & 1                                                                 & \textbf{\begin{tabular}[c]{@{}c@{}}49.56\\ (38.38)\end{tabular}}    & \begin{tabular}[c]{@{}c@{}}54.52\\  (41.77)\end{tabular}            & \textbf{\begin{tabular}[c]{@{}c@{}}53.09\\  (38.07)\end{tabular}}   & \begin{tabular}[c]{@{}c@{}}53.09\\  (39.94)\end{tabular}            \\ \cline{2-6} 
+                                                                                                                & 3                                                                 & \textbf{\begin{tabular}[c]{@{}c@{}}61.49\\ (30.01)\end{tabular}}    & \begin{tabular}[c]{@{}c@{}}88.97\\ (48.35)\end{tabular}             & \begin{tabular}[c]{@{}c@{}}64.26\\ (29.6)\end{tabular}              & \textbf{\begin{tabular}[c]{@{}c@{}}58.74\\  (26.36)\end{tabular}}   \\ \cline{2-6} 
+                                                                                                                & 10                                                                & \begin{tabular}[c]{@{}c@{}}96.55\\ (45.43)\end{tabular}             & \begin{tabular}[c]{@{}c@{}}294.59\\ (73.89)\end{tabular}            & \textbf{\begin{tabular}[c]{@{}c@{}}88.68\\ (37.45)\end{tabular}}    & \textbf{\begin{tabular}[c]{@{}c@{}}79.63\\  (33.34)\end{tabular}}   \\ \cline{2-6} 
+                                                                                                                & 20                                                                & \begin{tabular}[c]{@{}c@{}}126.2\\  (52.11)\end{tabular}            & \begin{tabular}[c]{@{}c@{}}500.11\\ (85.15)\end{tabular}            & \textbf{\begin{tabular}[c]{@{}c@{}}113.68 \\ (52.69)\end{tabular}}  & \textbf{\begin{tabular}[c]{@{}c@{}}102.22 \\ (51.12)\end{tabular}}  \\ \hline
+    \multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Water Area \\ NRMSE\end{tabular}}}                       & 1                                                                 & \textbf{\begin{tabular}[c]{@{}c@{}}0.0175\\ (0.0136)\end{tabular}}  & \begin{tabular}[c]{@{}c@{}}0.0193\\  (0.0148)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.0188\\  (0.0135)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.0188\\  (0.0141)\end{tabular}          \\ \cline{2-6} 
+                                                                                                                & 3                                                                 & \textbf{\begin{tabular}[c]{@{}c@{}}0.0217\\  (0.0106)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.0315 \\ (0.0171)\end{tabular}          & \begin{tabular}[c]{@{}c@{}}0.0227\\ (0.0105)\end{tabular}           & \textbf{\begin{tabular}[c]{@{}c@{}}0.0208 \\ (0.0093)\end{tabular}} \\ \cline{2-6} 
+                                                                                                                & 10                                                                & \begin{tabular}[c]{@{}c@{}}0.0341\\ (0.0161)\end{tabular}           & \begin{tabular}[c]{@{}c@{}}0.1042\\  (0.0262)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.0314\\ (0.0133)\end{tabular}}  & \textbf{\begin{tabular}[c]{@{}c@{}}0.0282\\  (0.0118)\end{tabular}} \\ \cline{2-6} 
+                                                                                                                & 20                                                                & \begin{tabular}[c]{@{}c@{}}0.0446\\  (0.0185)\end{tabular}          & \begin{tabular}[c]{@{}c@{}}0.1768\\ (0.0302)\end{tabular}           & \textbf{\begin{tabular}[c]{@{}c@{}}0.0402\\  (0.0187)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}0.0362\\  (0.0181)\end{tabular}} \\ \hline
+    \multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}True Prediction\\  Ratio (Recall) \\ (\%)\end{tabular}}} & 1                                                                 & \begin{tabular}[c]{@{}c@{}}97.97\\  (1.38)\end{tabular}             & \begin{tabular}[c]{@{}c@{}}97.72\\  (1.5)\end{tabular}              & \textbf{\begin{tabular}[c]{@{}c@{}}98.26\\  (1.44)\end{tabular}}    & \textbf{\begin{tabular}[c]{@{}c@{}}98.07\\  (1.5)\end{tabular}}     \\ \cline{2-6} 
+                                                                                                                & 3                                                                 & \textbf{\begin{tabular}[c]{@{}c@{}}98.21\\  (1.39)\end{tabular}}    & \begin{tabular}[c]{@{}c@{}}96.31\\ (1.68)\end{tabular}              & \textbf{\begin{tabular}[c]{@{}c@{}}98.41\\ (1.13)\end{tabular}}     & \begin{tabular}[c]{@{}c@{}}98.18\\  (1.24)\end{tabular}             \\ \cline{2-6} 
+                                                                                                                & 10                                                                & \begin{tabular}[c]{@{}c@{}}97.23 \\ (1.81)\end{tabular}             & \begin{tabular}[c]{@{}c@{}}88.4\\ (2.38)\end{tabular}               & \textbf{\begin{tabular}[c]{@{}c@{}}97.99\\  (1.21)\end{tabular}}    & \textbf{\begin{tabular}[c]{@{}c@{}}97.4\\  (1.42)\end{tabular}}     \\ \cline{2-6} 
+                                                                                                                & 20                                                                & \begin{tabular}[c]{@{}c@{}}96.08\\ (1.91)\end{tabular}              & \begin{tabular}[c]{@{}c@{}}81.49\\  (2.68)\end{tabular}             & \textbf{\begin{tabular}[c]{@{}c@{}}97.48\\  (1.36)\end{tabular}}    & \textbf{\begin{tabular}[c]{@{}c@{}}96.38\\  (1.73)\end{tabular}}    \\ \hline
+    \multirow{4}{*}{\textbf{FDR (\%)}}                                                                          & 1                                                                 & \begin{tabular}[c]{@{}c@{}}2.09\\ (1.06)\end{tabular}               & \textbf{\begin{tabular}[c]{@{}c@{}}1.65\\  (0.62)\end{tabular}}     & \begin{tabular}[c]{@{}c@{}}2.18\\  (0.85)\end{tabular}              & \textbf{\begin{tabular}[c]{@{}c@{}}1.9\\  (0.7)\end{tabular}}       \\ \cline{2-6} 
+                                                                                                                & 3                                                                 & \textbf{\begin{tabular}[c]{@{}c@{}}2.27\\  (0.48)\end{tabular}}     & \textbf{\begin{tabular}[c]{@{}c@{}}1.65\\  (0.28)\end{tabular}}     & \begin{tabular}[c]{@{}c@{}}3.01\\  (1.41)\end{tabular}              & \begin{tabular}[c]{@{}c@{}}2.36\\  (0.68)\end{tabular}              \\ \cline{2-6} 
+                                                                                                                & 10                                                                & \textbf{\begin{tabular}[c]{@{}c@{}}2.52\\ (0.44)\end{tabular}}      & \textbf{\begin{tabular}[c]{@{}c@{}}1.44\\  (0.15)\end{tabular}}     & \begin{tabular}[c]{@{}c@{}}3.76\\  (1.67)\end{tabular}              & \begin{tabular}[c]{@{}c@{}}2.84\\  (0.76)\end{tabular}              \\ \cline{2-6} 
+                                                                                                                & 20                                                                & \textbf{\begin{tabular}[c]{@{}c@{}}2.38\\ (0.31)\end{tabular}}      & \textbf{\begin{tabular}[c]{@{}c@{}}1.16\\ (0.09)\end{tabular}}      & \begin{tabular}[c]{@{}c@{}}4.18\\  (2.21)\end{tabular}              & \begin{tabular}[c]{@{}c@{}}2.77\\  (0.65)\end{tabular}              \\ \hline
+    \multirow{4}{*}{\textbf{PR\_AUC}}                                                                           & 1                                                                 & \begin{tabular}[c]{@{}c@{}}0.9765\\ (0.0162)\end{tabular}           & \textbf{\begin{tabular}[c]{@{}c@{}}0.9772\\  (0.0147)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}0.9765\\  (0.0153)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.9773\\  (0.0148)\end{tabular}} \\ \cline{2-6} 
+                                                                                                                & 3                                                                 & \textbf{\begin{tabular}[c]{@{}c@{}}0.9789\\ (0.0134)\end{tabular}}  & \begin{tabular}[c]{@{}c@{}}0.9745\\  (0.0145)\end{tabular}          & \begin{tabular}[c]{@{}c@{}}0.9746\\  (0.0195)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.9782\\  (0.0138)\end{tabular}} \\ \cline{2-6} 
+                                                                                                                & 10                                                                & \textbf{\begin{tabular}[c]{@{}c@{}}0.9732\\ (0.0143)\end{tabular}}  & \begin{tabular}[c]{@{}c@{}}0.9568\\ (0.0192)\end{tabular}           & \begin{tabular}[c]{@{}c@{}}0.9677\\  (0.0228)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.9729\\  (0.015)\end{tabular}}  \\ \cline{2-6} 
+                                                                                                                & 20                                                                & \textbf{\begin{tabular}[c]{@{}c@{}}0.9663\\ (0.0137)\end{tabular}}  & \begin{tabular}[c]{@{}c@{}}0.9406\\  (0.0213)\end{tabular}          & \begin{tabular}[c]{@{}c@{}}0.9584\\  (0.0246)\end{tabular}          & \textbf{\begin{tabular}[c]{@{}c@{}}0.9664\\  (0.0139)\end{tabular}} \\ \hline
+    \end{tabular}
+    \caption[]{Tonle Sap lake hydrological prediction performance in term of classification metrics. With regard to Recall and PR\_AUC, higher score is better. Otherwise, lower W\_RMSE, W\_NRMSE and FDR shows a better performance.}
+    \label{tab:chap4-classification-metrics}
+\end{table}
+
+We evaluate the prediction performance of all models in both term of regression and classification. The regression results are reported in table \ref{tab:chap4-regression-metrics} and classification results are reported in table \ref{tab:chap4-classification-metrics}. In each row of these two tables, we bold the two best metric values to emphasize the comparisons.
+
+Table \ref{tab:chap4-regression-metrics} shows that our methods yeild a higher loss and lower structural similarity than the traditional ConvLSTM model. PredRNN++ performs better in short-term prediction, and the results decrease dramatically when the number of prediction steps increases. The under-expected regression scores of our models result from the grid inference method. It divides the image to patches, which makes a huge influence on the overall regression evaluations.
 
 In contrast with the low regression scores, our methods perform better in classification metrics. The different of classification metrics across multiple methods lies principally on the neighbor region of the lake's boundary, rather than the lake's permanent water region and the far outside lake's region. The better performance of our methods demonstrates that they are more suitable for hydrological prediction, which is the primary goal of this work.
 
@@ -269,7 +322,7 @@ In Figure \ref{fig:chap4-test-30}, we show an example of the groundtruth and pre
               \small FDR
           \end{tabular}
     \end{center}
-    \caption[]{Prediction example of multiple methods and groundtruth with metrics}
+    \caption[]{Prediction example of multiple methods and groundtruth with multiple metrics}
     \label{fig:chap4-test-30}
 \end{figure}
 
@@ -298,13 +351,14 @@ In Figure \ref{fig:chap4-test-30}, we show an example of the groundtruth and pre
 \end{figure}
 
 Figure \ref{fig:chap4-performance-all-tests} indicates the performance of all methods in all metrics at all tests. The visualization shows that all methods yeild worse results in tests 25 to 35, which are from July to September. This time is in the wet season at Mekong Region %cite Water balance analysis for the Tonle Sap Lake–ﬂoodplain system
-, where flooding and the associated water level increase in the Mekong River causes the Tonle Sap River to change flow direction and flow towards the northwest (upstream) into Tonle Sap Lake (see Figure ).
+, where flooding and the associated water level increase in the Mekong River causes the Tonle Sap River to change flow direction and flow towards the northwest (upstream) into Tonle Sap Lake (see Figure \ref{fig:chap4-tonlesap-avg-area}). In term of Water Area NRMSE, ACG\_32 archives a more stable result than other methods. The NRMSE line of ACG\_32 is the lowest through time and is also the smoothest one. Moreover, in the perspective of PR\_AUC, although the averall result in table shows that the performance of ACG\_32 is slightly worser than ConvLSTM, the line plot of ACG\_32 is smoother than the one of ConvLSTM. Additionally, the recall plot over all tests declares one more time the significant contribution of attention-based approach in improving the time-serie prediction problems, especially in term of periodic data such as hydrology.
 
 \begin{SCfigure}
     \caption[]{Monthly average water level of Tonle Sap Lake at Kampong Luong (continuous line – right vertical axis) and inundated area (circles – left vertical axis). The observed minimum and maximum monthly average water levels have been illustrated with dotted bars}
     \includegraphics[width=.65\textwidth]{figures/chap4/tonlesap_avg_area_with_floodplain.png}
     \label{fig:chap4-tonlesap-avg-area}
 \end{SCfigure}
+
 
 
 \section{Conclusions}
